@@ -1,6 +1,10 @@
+package model;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+
+import controller.ClientHandler;
 
 public class Server {
     
