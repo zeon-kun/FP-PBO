@@ -10,14 +10,16 @@ _VSCode_
 
 ## **How To Use**
 ### **First Task : Setting up JavaFX**
-clone this project on your VSCode
+Clone this project on your VSCode
 >git clone https://github.com/zeon-kun/FP-PBO.git
   
-After that, go to your Java Projects, then click on Referenced Libraries
+After that, go to your Java Projects, then click on Referenced Libraries. 
 
-Once the file explorer opened, search for your JavaFX folder, and go to **lib** and select all of the jar libraries.
+Once the file explorer opened, search for your JavaFX folder, and go to **lib** and select all of the jar libraries. _(This will create a new folder .vscode where there will be a file called settings.json inside it)._
 
-After that, go to launch.json and edit "vmArgs" and change the path to your JavaFX lib folder path.
-### **Second Task**
+>_(optional): you can delete unwanted referenced libraries other than **your downloaded** JavaFX jar files_
+
+After that, press **CTRL+Shift+D** to create a launch.json. And then, go to launch.json and edit "vmArgs" and change the path to your JavaFX lib folder path.
+### **Second Task : Running the App**
 
     

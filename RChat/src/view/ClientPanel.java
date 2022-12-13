@@ -7,13 +7,14 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
+
 public class ClientPanel extends Application{
     @Override
     public void start(Stage primaryStage){
         try {
             Parent root = FXMLLoader.load(getClass().getResource("mainframe.fxml"));
             Scene scene = new Scene(root);
-            Image icon = new Image("./asset/RChat-logo.png");
+            Image icon = new Image(getClass().getResource("/asset/RChat-Logo.png").toString());
             
             primaryStage.getIcons().add(icon);
             primaryStage.setTitle("RChat");

@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.util.Scanner;
+import view.ClientPanel;
 
 public class Client {
     private Socket socket;
@@ -39,6 +40,24 @@ public class Client {
                 bufferedWriter.flush();
             }
             scanner.close();
+        } catch (IOException e) {
+            closeAll(socket, bufferedReader, bufferedWriter);
+        }
+    }
+
+    public void sendMessage(String clientMessage) {
+        try {
+            bufferedWriter.write(username);
+            bufferedWriter.newLine();
+            bufferedWriter.flush();
+            while (socket.isConnected()) {
+                // String clientMessage = scanner.nextLine();
+                bufferedWriter.write(username + ": " + clientMessage);
+                bufferedWriter.newLine();
+                bufferedWriter.flush();
+                
+            }
+            // scanner.close();
         } catch (IOException e) {
             closeAll(socket, bufferedReader, bufferedWriter);
         }
@@ -86,10 +105,12 @@ public class Client {
         System.out.println("Enter your username: ");
         String username = scanner.nextLine();
 
-        Socket socket = new Socket("localhost", 6969);
-        Client client = new Client(socket, username);
-        client.listenForMessage();
-        client.sendMessage();
-        scanner.close();
+        // Socket socket = new Socket("localhost", 6969);
+        // Client client = new Client(socket, username);
+
+
+        // client.listenForMessage();
+        // client.sendMessage();
+        // scanner.close();
     }
 }

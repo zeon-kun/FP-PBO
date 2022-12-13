@@ -36,6 +36,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.Light.Distant?>
 <?import javafx.scene.effect.Lighting?>
 <?import javafx.scene.effect.Shadow?>
@@ -46,7 +47,7 @@
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="640.0" prefWidth="800.0" style="-fx-background-color: CBEDD5;" styleClass="vboxAll" stylesheets="@mainframe.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.mainframeController">
+<VBox prefHeight="640.0" prefWidth="800.0" style="-fx-background-color: CBEDD5;" styleClass="vboxAll" stylesheets="@mainframe.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FrameController">
    <children>
       <FlowPane prefHeight="80.0" prefWidth="800.0" style="-fx-background-color: #439A97;" styleClass="flowTop">
          <children>
@@ -100,7 +101,7 @@
             <Insets left="50.0" right="50.0" top="39.0" />
          </VBox.margin>
          <content>
-            <VBox prefHeight="348.0" prefWidth="683.0" styleClass="vbox-msg" />
+            <VBox fx:id="vbox_msg" prefHeight="348.0" prefWidth="683.0" styleClass="vbox-msg" />
          </content>
       </ScrollPane>
       <FlowPane prefHeight="72.0" prefWidth="700.0" style="-fx-background-color: #97DECE;" styleClass="flowBot">
@@ -108,17 +109,18 @@
             <Insets left="50.0" right="50.0" top="32.0" />
          </VBox.margin>
          <children>
-            <Button id="searchButton" mnemonicParsing="false" prefHeight="50.0" prefWidth="200.0" styleClass="flowBotButton" text="SEARCH" textAlignment="CENTER">
+            <TextField fx:id="tf_msg" prefHeight="25.0" prefWidth="401.0" />
+            <Button id="sendButton" fx:id="send_button" mnemonicParsing="false" onAction="#test" prefHeight="50.0" prefWidth="200.0" styleClass="flowBotButton" text="SEND" textAlignment="CENTER">
                <font>
                   <Font name="Franklin Gothic Demi" size="24.0" />
                </font>
                <FlowPane.margin>
-                  <Insets left="250.0" right="250.0" top="11.0" />
+                  <Insets top="11.0" />
                </FlowPane.margin>
             </Button>
          </children>
       </FlowPane>
-      <Pane prefHeight="36.0" prefWidth="800.0">
+      <Pane prefHeight="36.0" prefWidth="800.0" style="-fx-background-color: #439A97;">
          <VBox.margin>
             <Insets top="31.0" />
          </VBox.margin>
