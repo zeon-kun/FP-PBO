@@ -1,6 +1,9 @@
+package model;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+
+import controller.ClientController;
 
 public class Server {
     
@@ -12,12 +15,13 @@ public class Server {
 
     public void startServer() {
         try {
+            System.out.println("Server started!");
             while (!serverSocket.isClosed()) {
                 Socket socket = serverSocket.accept();
                 System.out.println("A new client has connected!");
-                ClientHandler clientHandler = new ClientHandler(socket);
+                ClientController clientController = new ClientController(socket);
 
-                Thread thread = new Thread(clientHandler);
+                Thread thread = new Thread(clientController);
                 thread.start();
             }
         } catch (IOException e) {
@@ -35,9 +39,4 @@ public class Server {
         }
     }
 
-    public static void main(String[] args) throws IOException {
-        ServerSocket serverSocket = new ServerSocket(6969);
-        Server server = new Server(serverSocket);
-        server.startServer();
-    }
 }
