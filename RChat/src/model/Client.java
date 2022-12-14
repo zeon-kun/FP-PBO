@@ -7,6 +7,8 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.util.Scanner;
+
+import javafx.application.Application;
 import view.ClientPanel;
 
 public class Client {
@@ -101,13 +103,14 @@ public class Client {
     }
 
     public static void main(String[] args) throws IOException {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter your username: ");
-        String username = scanner.nextLine();
+        // Scanner scanner = new Scanner(System.in);
+        // System.out.println("Enter your username: ");
+        // String username = scanner.nextLine();
 
         // Socket socket = new Socket("localhost", 6969);
         // Client client = new Client(socket, username);
-
+        
+        Application.launch(ClientPanel.class);
 
         // client.listenForMessage();
         // client.sendMessage();
