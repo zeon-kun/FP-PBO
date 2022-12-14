@@ -1,0 +1,15 @@
+.vbox-msg{
+    -fx-background-color: #97DECE;
+    background-color: #97DECE;
+}
+
+.flowBot{
+    -fx-background-radius: 20;
+}
+
+.flowBotButton{
+    -fx-background-color: #62B6B7;
+    background-color: #62B6B7;
+    -fx-background-radius: 20;
+}
+
