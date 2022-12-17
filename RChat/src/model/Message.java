@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 
 public class Message implements Serializable {
+    //private int messageId;
     private User messageAuthor;
     private String messageText;
     private Timestamp timestamp;
@@ -21,4 +22,8 @@ public class Message implements Serializable {
     public String getMessageText() {
         return messageText;
     }
+
+    /*public setMessageId() {
+
+    }*/
 }

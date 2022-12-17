@@ -23,8 +23,6 @@ public class ClientController implements Runnable {
             this.inputStream = new ObjectInputStream(socket.getInputStream());
             this.user = (User) inputStream.readObject();
             clientControllers.add(this);
-            System.out.println(clientControllers.size());
-            System.out.println(user.getUserId() + " " + user.getUserName());
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
