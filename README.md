@@ -4,7 +4,7 @@
 RChat is a Java messaging application that implements GUI-socket-based server-client concept. It uses localhost as its Server and manage TCP (Transmission Control Protocol) communication between Clients.
 
 ## **Prequisities**
-_Java 18 / higher_  
+>_Java 18 / higher_  
 _JavaFX 19_  
 _VSCode_
 
