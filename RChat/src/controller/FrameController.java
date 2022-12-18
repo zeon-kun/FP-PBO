@@ -1,6 +1,7 @@
 package controller;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.Socket;
 import java.net.URL;
 import java.time.LocalDateTime;
@@ -13,9 +14,14 @@ import java.sql.Timestamp;
 
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -24,7 +30,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import javafx.stage.Stage;
 import javafx.util.Duration;
+
 import model.Client;
 import model.MessageDatabase;
 import model.Message;
@@ -51,9 +59,12 @@ public class FrameController implements Initializable {
     @FXML
     private ImageView imageView;
 
+    
+    
     private final int port = 6969;
     private User user;
     private Client client;
+
 
     private Boolean[] alreadyAssigned = {false, false, false, false};
     private MessageDatabase messageDatabase;
@@ -96,10 +107,9 @@ public class FrameController implements Initializable {
         //create new user from console or terminal, and then creates client from that user.username
         try {
             Scanner scanner = new Scanner(System.in);
-            System.out.println("Enter your name: ");
-            String name = scanner.nextLine();
-            int id = new Random().nextInt(100);
-            user = new User(id, name, assignProfilePicture(id));
+            // System.out.println("Enter your name: ");
+            String name = LoginController.getUsername();
+            user = new User(new Random().nextInt(100), name, getClass().getResource("/asset/Pikachu.png").toString());
             client = new Client(new Socket("localhost", port), user);
 
             scanner.close();

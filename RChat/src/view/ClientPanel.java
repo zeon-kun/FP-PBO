@@ -19,8 +19,8 @@ public class ClientPanel extends Application{
     @Override
     public void start(Stage primaryStage){
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("mainframe.fxml"));
-            Scene scene = new Scene(root);
+            Parent root = FXMLLoader.load(getClass().getResource("login.fxml"));
+            Scene loginScene = new Scene(root);
             Image icon = new Image(getClass().getResource("/asset/RChat-Logo.png").toString());
             // Media media = new Media(getClass().getResource("/asset/RChat-menu2.mp3").toString());
             // MediaPlayer mediaPlayer = new MediaPlayer(media);
@@ -30,7 +30,7 @@ public class ClientPanel extends Application{
             // });
             primaryStage.getIcons().add(icon);
             primaryStage.setTitle("RChat");
-            primaryStage.setScene(scene);
+            primaryStage.setScene(loginScene);
             primaryStage.show();
             primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
                 @Override
