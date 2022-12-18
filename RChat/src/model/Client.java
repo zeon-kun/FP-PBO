@@ -57,7 +57,9 @@ public class Client {
                         message = (Message) inputStream.readObject();
                         FrameController.sendMessageToOtherClients(message, vbox);
                     } catch (IOException | ClassNotFoundException e) {
+                        e.printStackTrace();
                         closeAll(socket, inputStream, outputStream);
+                        break;
                     }
                 }
                 
