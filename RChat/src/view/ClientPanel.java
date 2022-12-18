@@ -1,6 +1,8 @@
 package view;
 
+import controller.FrameController;
 import javafx.application.Application;
+import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -20,6 +22,9 @@ public class ClientPanel extends Application{
             // Media media = new Media(getClass().getResource("/asset/RChat-menu2.mp3").toString());
             // MediaPlayer mediaPlayer = new MediaPlayer(media);
             // mediaPlayer.setAutoPlay(true);
+            // primaryStage.setOnCloseRequest(event -> {
+                
+            // });
             primaryStage.getIcons().add(icon);
             primaryStage.setTitle("RChat");
             primaryStage.setScene(scene);

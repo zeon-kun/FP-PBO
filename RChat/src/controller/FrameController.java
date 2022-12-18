@@ -17,6 +17,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -31,8 +32,12 @@ import javafx.util.Duration;
 import model.Client;
 import model.Message;
 import model.User;
+import view.MessageBox;
 
 public class FrameController implements Initializable {
+    @FXML
+    private ScrollPane scrollPane;
+
     @FXML
     private Button send_button;
 
@@ -52,6 +57,28 @@ public class FrameController implements Initializable {
     private User user;
     private Client client;
 
+    private Boolean[] alreadyAssigned = {false, false, false, false};
+
+    public String assignProfilePicture(User user){
+        String imagepath = "";
+        int tempId = user.getUserId()/4;
+        String[] imageList = {getClass().getResource("/asset/Bulbasaur.png").toString(),
+                              getClass().getResource("/asset/Charmander.png").toString(),
+                              getClass().getResource("/asset/Pikachu.png").toString(),
+                              getClass().getResource("/asset/Squirtle.png").toString()};
+
+        if (alreadyAssigned[tempId] == false){
+            imagepath = imageList[tempId];
+            alreadyAssigned[tempId] = true;
+        } else {
+            while(alreadyAssigned[tempId] == true){
+                tempId++;
+            }
+            imagepath = imageList[tempId];
+            alreadyAssigned[tempId] = true;
+        }
+        return imagepath;
+    }
     //Override the initialize method in Intializable interface
     @Override
     public void initialize(URL locUrl, ResourceBundle resourceBundle) {
@@ -85,89 +112,65 @@ public class FrameController implements Initializable {
     @FXML
     public void messageFromTextField() {
         String messageText = tf_msg.getText();
+        if (messageText != ""){
+            //for testing purpose on console
+            System.out.println("Sending Message :" + messageText);
 
-        //for testing purpose on console
-        System.out.println("Sending Message :" + messageText);
+            //create a new message box
+            Message message = new Message(user, messageText, new Timestamp(System.currentTimeMillis()));
+            MessageBox newMsgBox = new MessageBox(message);
+            newMsgBox.create();
+            newMsgBox.getHbox().setAlignment(Pos.CENTER_RIGHT);
+            
+            vbox_msg.getChildren().add(newMsgBox.getHbox());
 
-        //create message box
-        Message message = new Message(user, messageText, new Timestamp(System.currentTimeMillis()));
-        User messageAuthor = message.getMessageAuthor();
-        //create a HBox to align the nodes horizontally
-        HBox hBox = new HBox();
-        hBox.setAlignment(Pos.CENTER_LEFT);
-        hBox.setPadding(new Insets(5, 5, 5, 10));
-
-        //create an ImageView for user's icon
-        ImageView imageView = new ImageView(new Image(messageAuthor.getImagePath()));
-        imageView.setFitWidth(30);
-        imageView.setFitHeight(30);
-        hBox.getChildren().add(imageView);
-
-        //create a VBox2 to contains our user's name and user's message
-        VBox vBox2 = new VBox();
-        vBox2.setPadding(new Insets(0, 0, 0, 12));
-            Text userName = new Text(message.getMessageAuthor().getUserName());
-            userName.setFont(Font.font("consolas"));
-            TextFlow userNameContainer = new TextFlow(userName);
-            userNameContainer.setPadding(new Insets(0, 0, 3, 7)); 
-        vBox2.getChildren().add(userNameContainer);
-            Text text = new Text(message.getMessageText());
-            TextFlow textFlow = new TextFlow(text);
-            textFlow.setStyle("-fx-background-color: rgb(233,233,235);" + "-fx-background-radius: 20px;");
-            textFlow.setPadding(new Insets(5, 10, 5, 10));
-        vBox2.getChildren().add(textFlow);
-
-        //add the VBox2 to our HBox
-        hBox.getChildren().add(vBox2);
+            // for (Node node : scrollPane.lookupAll(".scroll-bar")) {
+            //     if (node instanceof ScrollBar) {
+            //         ScrollBar scrollBar = (ScrollBar) node;
+            //         if (scrollBar.getOrientation() == Orientation.HORIZONTAL) {
+            //             // Do something with the horizontal scroll bar
         
-        vbox_msg.getChildren().add(hBox);
+            //             // Example 1: Print scrollbar height
+            //             // System.out.println(scrollBar.heightProperty().get());
+        
+            //             // Example 2: Listen to visibility changes
+            //             // scrollBar.visibleProperty().addListener((observable, oldValue, newValue) -> {
+            //             //     if(newValue) {
+            //             //         // Do something when scrollbar gets visible
+            //             //     } else {
+            //             //         // Do something when scrollbar gets hidden
+            //             //     }
+            //             // });
+            //         }
+            //         if (scrollBar.getOrientation() == Orientation.VERTICAL) {
+            //             // Do something with the vertical scroll bar
+            //         }
+        
+            //     }
+        
 
-        //send the message object to server
-        client.sendMessageToServer(message);
-        
-        //>>>>>>>>>>>>>>>>>>>>>> notif sound <<<<<<<< change this later
-        
-        //reset text field to empty
-        tf_msg.setText("");     
+            //send the message object to server
+            client.sendMessageToServer(message);
+            
+            //reset text field to empty
+            tf_msg.setText("");     
+        }
     }
 
     public static void sendMessageToOtherClients(Message message, VBox vbox) {
+        //your daily anime notifications
         startNotif();
-        User messageAuthor = message.getMessageAuthor();
-        //create a HBox to align the nodes horizontally
-        HBox hBox = new HBox();
-        hBox.setAlignment(Pos.CENTER_LEFT);
-        hBox.setPadding(new Insets(5, 5, 5, 10));
 
-        //create an ImageView for user's icon
-        ImageView imageView = new ImageView(new Image(messageAuthor.getImagePath()));
-        imageView.setFitWidth(30);
-        imageView.setFitHeight(30);
-        hBox.getChildren().add(imageView);
+        //create a new message box
+        MessageBox newMsgBox = new MessageBox(message);
+        newMsgBox.create();
 
-        //create a VBox2 to contains our user's name and user's message
-        VBox vBox2 = new VBox();
-        vBox2.setPadding(new Insets(0, 0, 0, 12));
-            Text userName = new Text(message.getMessageAuthor().getUserName());
-            userName.setFont(Font.font("consolas"));
-            TextFlow userNameContainer = new TextFlow(userName);
-            userNameContainer.setPadding(new Insets(0, 0, 3, 7)); 
-        vBox2.getChildren().add(userNameContainer);
-            Text text = new Text(message.getMessageText());
-            TextFlow textFlow = new TextFlow(text);
-            textFlow.setStyle("-fx-background-color: rgb(233,233,235);" + "-fx-background-radius: 20px;");
-            textFlow.setPadding(new Insets(5, 10, 5, 10));
-        vBox2.getChildren().add(textFlow);
-
-        //add the VBox2 to our HBox
-        hBox.getChildren().add(vBox2);
-
-        //create a runnable that runs later for our HBox 
+        //Creates a new Runnable that runs later and merge our HBox to the original vbox_msg
         //  (since the box message will be created when we send a message from the the user's perspective)
         Platform.runLater(new Runnable() {
             @Override
             public void run(){
-                vbox.getChildren().add(hBox);
+                vbox.getChildren().add(newMsgBox.getHbox());
             }
         }
         );
@@ -180,10 +183,16 @@ public class FrameController implements Initializable {
         notifPlayer.play();
         notifPlayer.setStartTime(Duration.ZERO);
     }
+    
+    @FXML
+    public void gotoMenu(){
 
-    // public void setNotif(){
-    //     notifPlayer.stop();
-    // }
+    }
+
+    @FXML
+    public void gotoTypeRace(){
+
+    }
 }
 
     
