@@ -1,5 +1,6 @@
 package controller;
 
+import java.io.IOException;
 import java.net.Socket;
 import java.net.URL;
 import java.time.LocalDateTime;
@@ -11,24 +12,25 @@ import java.sql.Timestamp;
 
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-import javafx.scene.text.Font;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextFlow;
+import javafx.stage.Stage;
 import javafx.util.Duration;
+
 import model.Client;
 import model.Message;
 import model.User;
@@ -53,9 +55,12 @@ public class FrameController implements Initializable {
     @FXML
     private ImageView imageView;
 
+    
+    
     private final int port = 6969;
     private User user;
     private Client client;
+
 
     private Boolean[] alreadyAssigned = {false, false, false, false};
 
@@ -97,8 +102,8 @@ public class FrameController implements Initializable {
         //create new user from console or terminal, and then creates client from that user.username
         try {
             Scanner scanner = new Scanner(System.in);
-            System.out.println("Enter your name: ");
-            String name = scanner.nextLine();
+            // System.out.println("Enter your name: ");
+            String name = LoginController.getUsername();
             user = new User(new Random().nextInt(100), name, getClass().getResource("/asset/Pikachu.png").toString());
             client = new Client(new Socket("localhost", port), user);
             scanner.close();
@@ -182,16 +187,6 @@ public class FrameController implements Initializable {
         MediaPlayer notifPlayer = new MediaPlayer(mediaForNotif);
         notifPlayer.play();
         notifPlayer.setStartTime(Duration.ZERO);
-    }
-    
-    @FXML
-    public void gotoMenu(){
-
-    }
-
-    @FXML
-    public void gotoTypeRace(){
-
     }
 }
 

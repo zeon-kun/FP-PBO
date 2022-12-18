@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="login_anchorpane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="640.0" prefWidth="800.0" style="-fx-background-color: #CBEDD5;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LoginController">
+   <children>
+      <ImageView fitHeight="397.0" fitWidth="397.0" layoutX="202.0" layoutY="-10.0" pickOnBounds="true" preserveRatio="true">
+        <image>
+            <Image url="@../asset/RChat-Logo.png" />
+        </image>
+      </ImageView>
+      <Label alignment="CENTER" layoutX="358.0" layoutY="320.0">
+         <font>
+            <Font size="21.0" />
+         </font>
+      </Label>
+      <Pane layoutX="241.0" layoutY="387.0" prefHeight="55.0" prefWidth="319.0" style="-fx-background-color: #62B6B7; -fx-background-radius: 20;">
+         <children>
+            <TextField fx:id="tf_username" alignment="CENTER" layoutX="14.0" layoutY="4.0" prefHeight="47.0" prefWidth="292.0" promptText="enter your username" style="-fx-background-radius: 20;">
+               <effect>
+                  <DropShadow blurType="GAUSSIAN">
+                     <color>
+                        <Color opacity="0.07999999821186066" />
+                     </color>
+                  </DropShadow>
+               </effect>
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </TextField>
+         </children>
+      </Pane>
+      <Button fx:id="login_button" layoutX="309.0" layoutY="487.0" mnemonicParsing="false" onAction="#loginToChat" prefHeight="61.0" prefWidth="181.0" style="-fx-background-color: #62B6B7; -fx-background-radius: 20;" text="LOGIN" textAlignment="CENTER">
+         <font>
+            <Font name="Segoe UI Symbol" size="30.0" />
+         </font>
+      </Button>
+   </children>
+</AnchorPane>
