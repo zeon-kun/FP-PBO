@@ -1,24 +1,25 @@
 package model;
 
 import java.io.Serializable;
+import java.util.Random;
+import java.util.UUID;
 
 // User class to store user data. Implements serializable because
 // we send user through stream
 public class User implements Serializable {
-    private static int userCount = 0;
-    private int userId;
+    private UUID userId;
     private String userName;
     private String imagePath;
 
     // Constructor for public user
-    public User(int userId, String userName, String imagePath) {
-        this.userId = generateId();   
+    public User(String userName, String imagePath) {
+        this.userId = UUID.randomUUID();
         this.userName = userName;
-        this.imagePath = imagePath;
+        this.imagePath = assignProfilePicture();
     }
 
     // Get user id
-    public int getUserId() {
+    public UUID getUserId() {
         return userId;
     }
 
@@ -32,7 +33,12 @@ public class User implements Serializable {
         return imagePath;
     }
     
-    private int generateId() {
-        return userCount + 1;
+    // Assigns a profile picture randomly
+    private String assignProfilePicture(){
+        String[] imageList = {getClass().getResource("/asset/Bulbasaur.png").toString(),
+                              getClass().getResource("/asset/Charmander.png").toString(),
+                              getClass().getResource("/asset/Pikachu.png").toString(),
+                              getClass().getResource("/asset/Squirtle.png").toString()};
+        return imageList[new Random().nextInt(imageList.length)];
     }
 }

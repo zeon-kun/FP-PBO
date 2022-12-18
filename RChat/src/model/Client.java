@@ -28,7 +28,6 @@ public class Client {
             outputStream.flush();
         } catch (IOException e) {
             System.out.println("Error creating client.");
-            e.printStackTrace();
             closeAll(socket, inputStream, outputStream);
         }
     }
@@ -39,7 +38,6 @@ public class Client {
             outputStream.writeObject(message);
             outputStream.flush();
         } catch (IOException e) {
-            e.printStackTrace();
             System.out.println("Error sending message to server.");
             closeAll(socket, inputStream, outputStream);
         }
@@ -58,6 +56,7 @@ public class Client {
                         FrameController.sendMessageToOtherClients(message, vbox);
                     } catch (IOException | ClassNotFoundException e) {
                         closeAll(socket, inputStream, outputStream);
+                        System.out.println("Error retrieving message from client.");
                         break;
                     }
                 }
@@ -77,9 +76,10 @@ public class Client {
             }
             if (socket != null) {
                 socket.close();
+                // Notify client if server is down
+                System.out.println("The server is down.");
             }
         } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 

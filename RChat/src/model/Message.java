@@ -3,7 +3,7 @@ package model;
 import java.io.Serializable;
 
 // Class message to store message data, implements Serializable 
-// so we can send object through stream
+// so we can send messages through stream
 public class Message implements Serializable {
     private User messageAuthor;
     private String messageText;

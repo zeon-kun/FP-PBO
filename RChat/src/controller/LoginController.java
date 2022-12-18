@@ -12,8 +12,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.scene.Node;
 
@@ -28,22 +26,26 @@ public class LoginController implements Initializable{
     private Scene scene;
     private Parent root;
 
+    //Override initialize method for the login scene
     @Override
     public void initialize(URL location, ResourceBundle source){
+        //Set default button condition to true (So we can click enter whenever we want)
         login_button.setDefaultButton(true);
     }
 
     public void loginToChat(ActionEvent event) throws IOException{
+        //Set username for static call purpose
+        username = tf_username.getText(); 
+        
+        //Load the mainframe.fxml (a.k.a the chat frame)
         root = FXMLLoader.load(getClass().getResource("../view/mainframe.fxml"));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
-        
-        username = tf_username.getText(); 
-        tf_username.setText("");
     }
 
+    //Static method to call the username string
     public static String getUsername(){
         return username;
     }

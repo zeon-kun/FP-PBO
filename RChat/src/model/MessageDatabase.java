@@ -27,7 +27,6 @@ public class MessageDatabase {
             objectOutputStream.writeObject(messages);
             objectOutputStream.flush();
             objectOutputStream.close();
-            System.out.println("The message " + message.getMessageText() + " has successfully been written to database");
         } catch (IOException e) {
         }
     }
@@ -40,7 +39,6 @@ public class MessageDatabase {
             messages = (ArrayList<Message>) objectInputStream.readObject();
             objectInputStream.close();
         } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
         }
         
         return messages;

@@ -66,10 +66,11 @@ public class ClientController implements Runnable {
                 outputStream.close();
             }
             if (socket != null) {
+                // Notifies server if client has disconnected
+                System.out.println("A client has disconnected!");
                 socket.close();
             }
         } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 }

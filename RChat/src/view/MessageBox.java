@@ -18,6 +18,7 @@ public class MessageBox {
     private ImageView imageView;
     private HBox hBox;
 
+    //Message Box Constructor
     public MessageBox(Message message){
         this.message = message;
         this.messageAuthor = message.getMessageAuthor();
@@ -53,6 +54,7 @@ public class MessageBox {
         hBox.getChildren().add(vBox2);
     }
     
+    //Getters to get the HBox of the Message Box
     public HBox getHbox(){
         return this.hBox;
     }
