@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 import model.*;
 
-// client controller to receive and send messages from clients
+// Client controller to forward a message to other client controllers
 public class ClientController implements Runnable {
     public static ArrayList<ClientController> clientControllers = new ArrayList<>();
     private Socket socket;
@@ -16,11 +16,15 @@ public class ClientController implements Runnable {
     private ObjectOutputStream outputStream;
     private User user;
 
+    // Constructor connects client controller to socket so it can send and receive
+    // message objects through object stream
     public ClientController(Socket socket) {
         try {
             this.socket = socket;
             this.outputStream = new ObjectOutputStream(socket.getOutputStream());
             this.inputStream = new ObjectInputStream(socket.getInputStream());
+
+            // Receives user from client
             this.user = (User) inputStream.readObject();
             clientControllers.add(this);
         } catch (IOException | ClassNotFoundException e) {
@@ -28,12 +32,16 @@ public class ClientController implements Runnable {
         }
     }
 
+    // Method to create a new thread that reads message from stream and sends it
+    // to other client controllers
     @Override
     public void run() {
         while (socket.isConnected()) {
             try {
                 Message message = (Message) inputStream.readObject();
                 
+                // Sends to other client controllers by checking client controllers
+                // that have different user id
                 for (ClientController clientController : clientControllers) {
                     if (clientController.user.getUserId() != user.getUserId()) {                        
                         clientController.outputStream.writeObject(message);
@@ -47,6 +55,8 @@ public class ClientController implements Runnable {
         }
     }
 
+    
+    // Method to close everything if we have caught an error
     public void closeAll(Socket socket, ObjectInputStream inputStream, ObjectOutputStream outputStream) {
         try {
             if (inputStream != null) {

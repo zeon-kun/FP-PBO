@@ -4,12 +4,11 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.sql.Timestamp;
-import java.util.Scanner;
 
 import controller.FrameController;
 import javafx.scene.layout.VBox;
 
+// Client that stores client data and functions
 public class Client {
     private Socket socket;
     private ObjectInputStream inputStream;
@@ -17,11 +16,14 @@ public class Client {
     private User user;
 
     public Client(Socket socket, User user) {
+        // Connect client with server socket so it can send and receive messages
         try {
             this.socket = socket;
             this.outputStream = new ObjectOutputStream(socket.getOutputStream());
             this.inputStream = new ObjectInputStream(socket.getInputStream());
             this.user = user;
+
+            // Send user to client controller
             outputStream.writeObject(this.user);
             outputStream.flush();
         } catch (IOException e) {
@@ -31,15 +33,11 @@ public class Client {
         }
     }
  
+    // Method to send message to server by writing message to stream
     public void sendMessageToServer(Message message) {
         try {
-            // Scanner scanner = new Scanner(System.in);
-            // while (socket.isConnected()) {
-                // String messageText = scanner.nextLine();
-                outputStream.writeObject(message);
-                outputStream.flush();
-            // }
-            // scanner.close();
+            outputStream.writeObject(message);
+            outputStream.flush();
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("Error sending message to server.");
@@ -47,6 +45,8 @@ public class Client {
         }
     }
 
+    // Method to receive message from server by reading continuously if there
+    // is a message available then forward that message to other clients
     public void receiveMessageFromServer(VBox vbox) {
         new Thread(new Runnable() {
             @Override
@@ -57,7 +57,6 @@ public class Client {
                         message = (Message) inputStream.readObject();
                         FrameController.sendMessageToOtherClients(message, vbox);
                     } catch (IOException | ClassNotFoundException e) {
-                        e.printStackTrace();
                         closeAll(socket, inputStream, outputStream);
                         break;
                     }
@@ -67,6 +66,7 @@ public class Client {
         }).start();
     }
     
+    // Method to close everything if we have caught an error
     public void closeAll(Socket socket, ObjectInputStream inputStream, ObjectOutputStream outputStream) {
         try {
             if (inputStream != null) {

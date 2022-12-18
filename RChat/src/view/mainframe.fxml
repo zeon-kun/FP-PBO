@@ -108,7 +108,7 @@
             </Pane>
          </children>
       </FlowPane>
-      <ScrollPane fx:id="scrollpane" prefHeight="350.0" prefWidth="700.0">
+      <ScrollPane fx:id="scroll_pane" prefHeight="350.0" prefWidth="700.0">
          <VBox.margin>
             <Insets left="50.0" right="50.0" top="39.0" />
          </VBox.margin>

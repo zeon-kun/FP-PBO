@@ -5,6 +5,7 @@ import java.net.Socket;
 
 import controller.ClientController;
 
+// Server class
 public class Server {
     
     private ServerSocket serverSocket;
@@ -13,6 +14,8 @@ public class Server {
         this.serverSocket = serverSocket;
     }
 
+    // Method to start server then accept any incoming connection requests from
+    // clients and assigning a clientcontroller to that client
     public void startServer() {
         try {
             System.out.println("Server started!");
@@ -29,14 +32,10 @@ public class Server {
         }
     }
 
-    public void closeServerSocket() {
-        try {
-            if (serverSocket != null) {
-                serverSocket.close();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    // Main method
+    public static void main(String[] args) throws IOException {
+        ServerSocket serverSocket = new ServerSocket(6969);
+        Server server = new Server(serverSocket);
+        server.startServer();
     }
-
 }

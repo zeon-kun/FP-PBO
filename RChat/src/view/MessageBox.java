@@ -26,16 +26,16 @@ public class MessageBox {
     }
 
     public void create(){
-        //create a HBox to align the nodes horizontally
+        // Create a HBox to align the nodes horizontally
         hBox.setAlignment(Pos.CENTER_LEFT);
         hBox.setPadding(new Insets(5, 5, 5, 10));
 
-        //create an ImageView for user's icon
+        // Create an ImageView for user's icon
         imageView.setFitWidth(30);
         imageView.setFitHeight(30);
         hBox.getChildren().add(imageView);
 
-        //create a VBox2 to contains our user's name and user's message
+        // Create a VBox2 to contains our user's name and user's message
         VBox vBox2 = new VBox();
         vBox2.setPadding(new Insets(0, 0, 0, 12));
             Text userName = new Text(message.getMessageAuthor().getUserName());
@@ -49,7 +49,7 @@ public class MessageBox {
             textFlow.setPadding(new Insets(5, 10, 5, 10));
         vBox2.getChildren().add(textFlow);
 
-        //add the VBox2 to our HBox
+        // Add the VBox2 to our HBox
         hBox.getChildren().add(vBox2);
     }
     

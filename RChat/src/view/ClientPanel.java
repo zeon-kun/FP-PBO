@@ -2,7 +2,9 @@ package view;
 
 import controller.FrameController;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -10,6 +12,7 @@ import javafx.scene.image.Image;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 public class ClientPanel extends Application{
     //override Application class' start method to load our fxml file
@@ -29,6 +32,13 @@ public class ClientPanel extends Application{
             primaryStage.setTitle("RChat");
             primaryStage.setScene(scene);
             primaryStage.show();
+            primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+                @Override
+                public void handle(WindowEvent t) {
+                    Platform.exit();
+                    System.exit(0);
+                }
+            });
         } catch (Exception e) {
             e.printStackTrace();
         }

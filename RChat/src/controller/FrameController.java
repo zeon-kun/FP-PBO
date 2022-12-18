@@ -1,9 +1,11 @@
 package controller;
 
+import java.io.File;
 import java.net.Socket;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.ResourceBundle;
 import java.util.Scanner;
@@ -13,30 +15,26 @@ import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-import javafx.scene.text.Font;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextFlow;
 import javafx.util.Duration;
 import model.Client;
+import model.MessageDatabase;
 import model.Message;
 import model.User;
 import view.MessageBox;
 
+// Main frame controller
 public class FrameController implements Initializable {
     @FXML
-    private ScrollPane scrollPane;
+    private ScrollPane scroll_pane;
 
     @FXML
     private Button send_button;
@@ -58,10 +56,11 @@ public class FrameController implements Initializable {
     private Client client;
 
     private Boolean[] alreadyAssigned = {false, false, false, false};
+    private MessageDatabase messageDatabase;
 
-    public String assignProfilePicture(User user){
+    public String assignProfilePicture(int userId){
         String imagepath = "";
-        int tempId = user.getUserId()/4;
+        int tempId = userId % 4;
         String[] imageList = {getClass().getResource("/asset/Bulbasaur.png").toString(),
                               getClass().getResource("/asset/Charmander.png").toString(),
                               getClass().getResource("/asset/Pikachu.png").toString(),
@@ -99,12 +98,25 @@ public class FrameController implements Initializable {
             Scanner scanner = new Scanner(System.in);
             System.out.println("Enter your name: ");
             String name = scanner.nextLine();
-            user = new User(new Random().nextInt(100), name, getClass().getResource("/asset/Pikachu.png").toString());
+            int id = new Random().nextInt(100);
+            user = new User(id, name, assignProfilePicture(id));
             client = new Client(new Socket("localhost", port), user);
+
             scanner.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        // Scroll to bottom of chat when there is a new message (when vbox height changes)
+        vbox_msg.heightProperty().addListener(observable -> scroll_pane.setVvalue(1.0));
+        
+        // Creates MessageDatabase object as a connector to the database
+        messageDatabase = new MessageDatabase(new File("messagedb"));
+
+        // Loads messages from the database
+        loadMessages();
+
+        // Client will be able to receive messages from other clients
         client.receiveMessageFromServer(vbox_msg);
     }
 
@@ -117,46 +129,26 @@ public class FrameController implements Initializable {
             System.out.println("Sending Message :" + messageText);
 
             //create a new message box
-            Message message = new Message(user, messageText, new Timestamp(System.currentTimeMillis()));
+            Message message = new Message(user, messageText);
             MessageBox newMsgBox = new MessageBox(message);
             newMsgBox.create();
             newMsgBox.getHbox().setAlignment(Pos.CENTER_RIGHT);
             
             vbox_msg.getChildren().add(newMsgBox.getHbox());
 
-            // for (Node node : scrollPane.lookupAll(".scroll-bar")) {
-            //     if (node instanceof ScrollBar) {
-            //         ScrollBar scrollBar = (ScrollBar) node;
-            //         if (scrollBar.getOrientation() == Orientation.HORIZONTAL) {
-            //             // Do something with the horizontal scroll bar
-        
-            //             // Example 1: Print scrollbar height
-            //             // System.out.println(scrollBar.heightProperty().get());
-        
-            //             // Example 2: Listen to visibility changes
-            //             // scrollBar.visibleProperty().addListener((observable, oldValue, newValue) -> {
-            //             //     if(newValue) {
-            //             //         // Do something when scrollbar gets visible
-            //             //     } else {
-            //             //         // Do something when scrollbar gets hidden
-            //             //     }
-            //             // });
-            //         }
-            //         if (scrollBar.getOrientation() == Orientation.VERTICAL) {
-            //             // Do something with the vertical scroll bar
-            //         }
-        
-            //     }
-        
-
             //send the message object to server
             client.sendMessageToServer(message);
             
+            // Add message to the database
+            messageDatabase.write(message);
+            
             //reset text field to empty
             tf_msg.setText("");     
+            
         }
     }
 
+    // Sends message to other clients
     public static void sendMessageToOtherClients(Message message, VBox vbox) {
         //your daily anime notifications
         startNotif();
@@ -172,26 +164,26 @@ public class FrameController implements Initializable {
             public void run(){
                 vbox.getChildren().add(newMsgBox.getHbox());
             }
-        }
-        );
-        
+        });
     }
 
+    // Method to start notification sound
     public static void startNotif(){
         Media mediaForNotif = new Media(FrameController.class.getResource("/asset/RChat-notif.mp3").toString());
         MediaPlayer notifPlayer = new MediaPlayer(mediaForNotif);
         notifPlayer.play();
         notifPlayer.setStartTime(Duration.ZERO);
     }
-    
-    @FXML
-    public void gotoMenu(){
 
-    }
-
-    @FXML
-    public void gotoTypeRace(){
-
+    // Method to load messages from the database by getting the messages
+    // then iterating for every message, we create a new message box
+    private void loadMessages() {
+        ArrayList<Message> messages = messageDatabase.read();
+        for (Message message : messages) {
+            MessageBox messageBox = new MessageBox(message);
+            messageBox.create();
+            vbox_msg.getChildren().add(messageBox.getHbox());
+        }
     }
 }
 
