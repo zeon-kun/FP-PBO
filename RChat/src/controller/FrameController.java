@@ -108,7 +108,7 @@ public class FrameController implements Initializable {
         try {
             Scanner scanner = new Scanner(System.in);
             // System.out.println("Enter your name: ");
-            String name = LoginController.getUsername();
+            String name = new String(LoginController.getUsername());
             user = new User(new Random().nextInt(100), name, getClass().getResource("/asset/Pikachu.png").toString());
             client = new Client(new Socket("localhost", port), user);
 
