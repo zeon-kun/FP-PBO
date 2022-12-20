@@ -1,27 +1,18 @@
 package controller;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.Socket;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Random;
 import java.util.ResourceBundle;
-import java.util.Scanner;
-import java.sql.Timestamp;
 
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -30,7 +21,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import model.Client;
@@ -40,6 +30,7 @@ import model.User;
 import view.MessageBox;
 
 // Main frame controller
+// Implements the Initializable interface, so that we can run programs inside the GUI
 public class FrameController implements Initializable {
     @FXML
     private ScrollPane scroll_pane;
@@ -64,31 +55,8 @@ public class FrameController implements Initializable {
     private final int port = 6969;
     private User user;
     private Client client;
-
-
-    private Boolean[] alreadyAssigned = {false, false, false, false};
     private MessageDatabase messageDatabase;
 
-    public String assignProfilePicture(int userId){
-        String imagepath = "";
-        int tempId = userId % 4;
-        String[] imageList = {getClass().getResource("/asset/Bulbasaur.png").toString(),
-                              getClass().getResource("/asset/Charmander.png").toString(),
-                              getClass().getResource("/asset/Pikachu.png").toString(),
-                              getClass().getResource("/asset/Squirtle.png").toString()};
-
-        if (alreadyAssigned[tempId] == false){
-            imagepath = imageList[tempId];
-            alreadyAssigned[tempId] = true;
-        } else {
-            while(alreadyAssigned[tempId] == true){
-                tempId++;
-            }
-            imagepath = imageList[tempId];
-            alreadyAssigned[tempId] = true;
-        }
-        return imagepath;
-    }
     //Override the initialize method in Intializable interface
     @Override
     public void initialize(URL locUrl, ResourceBundle resourceBundle) {
@@ -106,15 +74,13 @@ public class FrameController implements Initializable {
 
         //create new user from console or terminal, and then creates client from that user.username
         try {
-            Scanner scanner = new Scanner(System.in);
-            // System.out.println("Enter your name: ");
-            String name = new String(LoginController.getUsername());
-            user = new User(new Random().nextInt(100), name, getClass().getResource("/asset/Pikachu.png").toString());
+            String userName = LoginController.getUsername();
+            user = new User(userName, getClass().getResource("/asset/Pikachu.png").toString());
             client = new Client(new Socket("localhost", port), user);
-
-            scanner.close();
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("Error creating client!");
+            Platform.exit();
+            System.exit(0);
         }
 
         // Scroll to bottom of chat when there is a new message (when vbox height changes)
@@ -135,8 +101,6 @@ public class FrameController implements Initializable {
     public void messageFromTextField() {
         String messageText = tf_msg.getText();
         if (messageText != ""){
-            //for testing purpose on console
-            System.out.println("Sending Message :" + messageText);
 
             //create a new message box
             Message message = new Message(user, messageText);
